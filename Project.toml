@@ -1,0 +1,13 @@
+name = "ModellingStochasticTimerRW"
+uuid = "0c0abd89-3d00-452f-bfc2-ba0bbfa02c6f"
+authors = ["Jonathan Miller"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.8"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
