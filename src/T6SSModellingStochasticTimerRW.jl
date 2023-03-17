@@ -3,6 +3,7 @@ module T6SSModellingStochasticTimerRW
 using Reexport
 
 @reexport using Revise
+@reexport using Base
 @reexport using Profile
 @reexport using RandomWalker
 @reexport using Telegraph
@@ -75,7 +76,7 @@ export
     boundary_conditional,
     get_boundary_distance_functions,
     boundary_conditions,
-    Telegraph.update,
+    update,
     T6ss_next_choice,
     get_state_time_series,
     get_all_walker_position,
@@ -89,14 +90,13 @@ export
     view_scatter_mean,
     save_figure
 
-
+include("GetStructsTypes.jl")
 include("GetFileAndNamingFunc.jl")
 include("GenerateT6ssData.jl")
 include("GenerateTheoreticalData.jl")
 include("GetDistanceFunc.jl")
 include("GetHelperFunc.jl")
 include("GetSolutionWalkerFunc.jl")
-include("GetStructsTypes.jl")
 include("GetWalkerHelperFunc.jl")
 include("GetWalkerPositionsFunc.jl")
 include("ViewMultipleParamsIters.jl")
