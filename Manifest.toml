@@ -980,14 +980,6 @@ uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 deps = ["SHA", "Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
-[[RandomWalker]]
-deps = ["Distributions", "Random", "Reexport", "Revise"]
-git-tree-sha1 = "9b90c7f6cd46fd12f05d1b899d33debe2c1ce589"
-repo-rev = "main"
-repo-url = "https://github.com/fieldofnodes/RandomWalker.jl"
-uuid = "7fedaefd-d960-4ead-b78b-a12e7d3c4dc2"
-version = "1.0.0-DEV"
-
 [[RangeArrays]]
 git-tree-sha1 = "b9039e93773ddcfc828f12aadf7115b4b4d225f5"
 uuid = "b3c3ace0-ae52-54e7-9d0b-2c1406fd6b9d"
