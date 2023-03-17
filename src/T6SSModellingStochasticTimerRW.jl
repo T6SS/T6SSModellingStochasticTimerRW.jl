@@ -33,6 +33,7 @@ export
     T6ssBiologicalInspired,
     Variables,
     Iterations,
+    Parameters,
     Domain,
     WalkerFirstLast,
     T6ssDistance,
