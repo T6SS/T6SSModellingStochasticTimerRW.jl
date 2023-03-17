@@ -980,6 +980,14 @@ uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 deps = ["SHA", "Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
+[[RandomWalker]]
+deps = ["Distributions", "Random", "Reexport", "Revise"]
+git-tree-sha1 = "910b65d23f491c002c5496da350e9de23ba95333"
+repo-rev = "main"
+repo-url = "https://github.com/fieldofnodes/RandomWalker.jl"
+uuid = "7fedaefd-d960-4ead-b78b-a12e7d3c4dc2"
+version = "1.0.0-DEV"
+
 [[RangeArrays]]
 git-tree-sha1 = "b9039e93773ddcfc828f12aadf7115b4b4d225f5"
 uuid = "b3c3ace0-ae52-54e7-9d0b-2c1406fd6b9d"
@@ -1218,7 +1226,7 @@ version = "1.10.1"
 
 [[Telegraph]]
 deps = ["Reexport", "Revise"]
-git-tree-sha1 = "d2e102c7709b0a4ccaa6db016718100ff89c6453"
+git-tree-sha1 = "ff1a7872db58fbd54bdb29f20720757d1223f705"
 repo-rev = "main"
 repo-url = "https://github.com/fieldofnodes/Telegraph.jl"
 uuid = "d9abfcff-0c94-4277-a476-16906862b370"
