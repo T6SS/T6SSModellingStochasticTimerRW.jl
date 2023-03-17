@@ -90,11 +90,11 @@ export
     save_figure
 
 
-include("GetFileAndNamingFuncjl")
+include("GetFileAndNamingFunc.jl")
 include("GenerateT6ssData.jl")
 include("GenerateTheoreticalData.jl")
 include("GetDistanceFunc.jl")
-include("GetHelperFuncjl")
+include("GetHelperFunc.jl")
 include("GetSolutionWalkerFunc.jl")
 include("GetStructsTypes.jl")
 include("GetWalkerHelperFunc.jl")
