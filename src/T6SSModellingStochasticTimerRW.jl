@@ -1,4 +1,4 @@
-module ModellingStochasticTimerRW
+module T6SSModellingStochasticTimerRW
 
 using Reexport
 
