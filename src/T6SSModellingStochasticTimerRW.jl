@@ -5,8 +5,8 @@ using Reexport
 @reexport using Revise
 @reexport using Base
 @reexport using Profile
-@reexport using RandomWalker
 @reexport using Telegraph
+@reexport using RandomWalker
 @reexport using AlgebraOfGraphics
 @reexport using JSON3
 @reexport using Distances
