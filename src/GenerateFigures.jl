@@ -23,8 +23,31 @@ function pre_defined_params()
     return input_values
 end
 
-function data_path_filenames(data_numeric_label::Int)
-    input_values = pre_defined_params()
+function pre_defined_params(parameter_iterations)
+    Δt = 0.0001
+    Δx = 1
+    T = 10
+    X = 20
+    aspect = 1
+    boundary = "no_flux"
+    simulation_iterations = 4
+    parameter_iterations = parameter_iterations
+    λ₀,λ₁ = 0.017,0.045
+    h = 1
+    dif_min = 0.0049
+    dif_max = 0.1
+    λmax = 100
+    hmax = 10
+    amax = 4
+    data_root = "data/"
+    input_values = T6ssDataGenerateInput(
+            Δt,Δx,T,X,aspect,boundary,
+            simulation_iterations,parameter_iterations,
+            λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root)
+    return input_values
+end
+
+function data_path_filenames(input_values,data_numeric_label)
     @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = input_values
     iter = Iterations(simulation_iterations,parameter_iterations)
     parameter_span = "Span"
@@ -40,23 +63,6 @@ function data_path_filenames(data_numeric_label::Int)
     return data_path_json_vec
 end
 
-
-function data_path_filenames(data_numeric_label::Int,iterations)
-    input_values = pre_defined_params()
-    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = input_values
-    iter = Iterations(simulation_iterations,parameter_iterations)
-    parameter_span = "Span"
-    iterations = lpad.(1:iterations,2,"0")
-    data_path_json_vec = [
-        data_root*
-        join_figure_number_letter(x,parameter_span)*
-        "ParamIter"*
-        string(z) 
-            for x in data_numeric_label 
-            for z in iterations] .* 
-            ".json"
-    return data_path_json_vec
-end
 
 function get_grouped_file_paths(input_values)
 
@@ -296,7 +302,7 @@ function generate_figure_4_data(input_values)
 
 
 
-    data_path_json_vec = data_path_filenames(figure_number)
+    data_path_json_vec = data_path_filenames(input_values,figure_number)
 
 
     function sol(var, Δp, dom, iter,data_path_json_vec)
@@ -352,7 +358,7 @@ function generate_figure_4_b(iters_get_values)
 
     # For everything except the last figure
     data_figsb = @chain figure_4 begin
-        data_path_filenames(_)
+        data_path_filenames(input_values,_)
         filter(x -> occursin("Iter$(first_plot).",x),_)[1]
         read_solution_from_memory(_,SolutionVarParDom)
     end
@@ -378,7 +384,7 @@ function generate_figure_4_c(input_values,iters_get_values)
 
     # For everything except the last figure
     data_figsc = @chain figure_4 begin
-        data_path_filenames(_)
+        data_path_filenames(input_values,_)
         filter(x -> occursin("Iter$(second_plot).",x),_)[1]
         read_solution_from_memory(_,SolutionVarParDom)
     end
@@ -395,14 +401,15 @@ function generate_figure_4_c(input_values,iters_get_values)
     return figsc
 end
 
-function generate_figure_4_d(iters_get_values)
+function generate_figure_4_d(input_values,iters_get_values)
+
     Δx = 0.1
     λ₀ₘᵢₙ = 0.01
     λ₀ₘₐₓ = 10
     figure_number = 4
-    λ₀_vec = range(λ₀ₘᵢₙ,λ₀ₘₐₓ,iter.parameter_iterations)
+    λ₀_vec = range(λ₀ₘᵢₙ,λ₀ₘₐₓ,input_values.parameter_iterations)
     figsd = @chain figure_number begin
-        data_path_filenames(_) 
+        data_path_filenames(input_values,_) 
         read_solution_from_memory.(_,SolutionVarParDom)
     end
 
@@ -447,42 +454,79 @@ function generate_figure_4_d(iters_get_values)
 end
 
 function generate_figure_5_data(input_values)
+    
     @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
-            input_values
-    var = Variables(Δt, Δx, T, X, aspect,boundary)
-    par =  Parameters(λ₀,λ₁,h)
-    dom = dimensions(var)
-    iter = Iterations(simulation_iterations,parameter_iterations)
-    D_vec = range(dif_min,dif_max,iter.parameter_iterations) 
-
+    input_values
     figure_number = 5
-
-    data_path_json_vec = data_path_filenames(figure_number)
-
-    # D_vec
-    Δx = 0.1
+    
+    
+    
+    Δt = 0.0001
+    Δx = 1
+    T = 10
+    X = 20
     aspect = 1.6
-    X = 2
-    var = @set var.aspect = aspect
-    dom = dimensions(var)
-    parD = map(D_vec) do io    
-        @set par.h = io
+    boundary = "no_flux"
+    
+    iter = Iterations(simulation_iterations,parameter_iterations) 
+    parameter_iterations_save = iter.parameter_iterations+1
+    data_path_json_vec = 
+        data_path_filenames(
+            pre_defined_params(parameter_iterations_save),
+            figure_number) # sort different itrerations
+    vars = Variables(Δt, Δx, T, X, aspect,boundary) # set variables to Variable struct
+    dom = dimensions(vars) # get dimensions of domain stored to Domain struct
+    
+    Literature_scale = 2.7 # Ratio 1:2.7 of TssB:TssL
+    
+    λ₀ = 1/60
+    λ₁ = λ₀*Literature_scale
+    dif_min = 1E-3#0.0049
+    dif_max = 0.1
+    Δx = 0.1  # need to add in later
+    D⃗ = @chain range(dif_min,dif_max,iter.parameter_iterations) begin
+        vcat(_,0.0049)
+        sort(_)    
+    end # Set range of the diffusion
+    
+    h⃗ = round.(LitRate.(D⃗,Δx),digits=4) # Set range for h based on diffusion (D⃗) from literature
+    par = map(h -> Parameters(λ₀,λ₁,h),h⃗)
+    Δp = map(p -> Δ(p,vars),par) 
+    
+    
+    
+    # Update Δt according to Db and Δx
+    function Δt_func(φ,Δx,Db,var::Variables)
+        ϵ = 1e-6
+        var = @set var.Δt = round((φ*Δx^2)/(Db) - ϵ,digits = 5)
+        return var
     end
 
-    solutionD = map(parD) do io
-        parDLitRate = @set io.h = round(LitRate(io.h,Δx),digits=0)
-        Δp = Δ(parDLitRate,var)       
-        get_experimental_sample_dist_vecs(var, Δp, dom, iter) * Δx 
-    end
 
-    var = @set var.Δx = Δx
-    var = @set var.X = X
-    dom = dimensions(var)
-    sols = [SolutionVarParDom(var,parD[i],dom,iter,solutionD[i].experimental,solutionD[i].sample) for i in 1:iter.parameter_iterations]
-
+    φ = 1e-2
+    vars = map(Db -> Δt_func(φ,Δx,Db,vars),D⃗)
+    results = map(
+        (v,p) -> 
+            get_experimental_sample_dist_vecs(T6ssBiologicalInspired(),v, p, dom, iter), 
+            vars, Δp) .* 
+        Δx 
+    vars = [@set i.Δx = Δx for i in vars] # Re-set Δx
+    vars = [@set i.X = Int(X*Δx) for i in vars] # Re-set X
+    dom = [dimensions(i) for i in vars] # Upate dimensions
+    par = map(D -> Parameters(λ₀,λ₁,D),D⃗) # Update parameters
+    
+    sols = [
+        SolutionVarParDom(
+            vars[i],
+            par[i],
+            dom[i],
+            iter,
+            results[i].experimental,
+            results[i].sample) 
+            for i in 1:parameter_iterations_save] # Convert to struct # account for special D
+    
 
     write_solution_to_file.(sols,data_path_json_vec)
-
 end
 
 function generate_figure_5_a(iters_get_values)
@@ -493,7 +537,7 @@ function generate_figure_5_a(iters_get_values)
     parameter_colours = [colorant"#d471d1", colorant"#60dce5"]
 
     figsa = @chain figure_number begin
-        data_path_filenames(_)
+        data_path_filenames(input_values,_)
         filter(x -> occursin("Iter$(first_plot).",x),_)[1]
         read_solution_from_memory(_,SolutionVarParDom)
         view_distance_and_mean(_,iters_get_values[4],parameter_colours[1])
@@ -510,7 +554,7 @@ function generate_figure_5_b(input_values,iters_get_values)
     parameter_colours = [colorant"#d471d1", colorant"#60dce5"]
 
     figsb = @chain figure_number begin
-        data_path_filenames(_)
+        data_path_filenames(input_values,_)
         filter(x -> occursin("Iter$(second_plot).",x),_)[1]
         read_solution_from_memory(_,SolutionVarParDom)
         view_distance_and_mean(_,iters_get_values[4],parameter_colours[2])
@@ -525,7 +569,7 @@ function generate_figure_5_c(iters_get_values)
     first_D_value = 0.0049
 
     figsd_data = @chain figure_number begin
-        data_path_filenames(_)
+        data_path_filenames(input_values,_)
         read_solution_from_memory.(_,SolutionVarParDom)
     end
 
@@ -618,7 +662,7 @@ function generate_figure_4()
     figsa = generate_figure_4_a(input_values)
     figsb = generate_figure_4_b(iters_get_values)
     figsc = generate_figure_4_c(input_values,iters_get_values)
-    figsd = generate_figure_4_d(iters_get_values)    
+    figsd = generate_figure_4_d(input_values,iters_get_values)
 
 
 return (a = figsa,b = figsb,c=figsc,d=figsd)
@@ -631,7 +675,8 @@ Figure 5:
 3. Range of D and extpected distance travelled
 """
 function generate_figure_5()
-    input_values = pre_defined_params()
+    parameter_iterations = 49
+    input_values = pre_defined_params(parameter_iterations)
     iters_get_values = generate_iters_get_values()
     generate_figure_5_data(input_values)
     figsa = generate_figure_5_a(iters_get_values)
