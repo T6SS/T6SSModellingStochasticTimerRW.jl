@@ -192,6 +192,10 @@
     """
     Base.:*(wfl::WalkerFirstLast,x) = WalkerFirstLast(wfl.w₁ * x,wfl.w₂ * x)
     
+    """
+        Generate the exponential pdf
+    """
+    generate_exponential(λ,t) = λ*exp(-t*λ)
 //    
 
 
