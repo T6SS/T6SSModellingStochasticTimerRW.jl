@@ -91,6 +91,10 @@ export
     view_scatter_mean,
     save_figure,
     pre_defined_params,
+    data_path_filenames,
+    get_grouped_file_paths,
+    generate_iters_get_values,
+    generate_telegraph_times_one_cycle,
     generate_figure_3_data,
     generate_figure_3_a,
     generate_figure_3_b,
@@ -107,7 +111,6 @@ export
     generate_figure_5_a,
     generate_figure_5_b,
     generate_figure_5_c,
-    generate_figure_5_d,
     generate_figure_5
 
 include("GetStructsTypes.jl")
