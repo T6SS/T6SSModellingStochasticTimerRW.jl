@@ -90,6 +90,7 @@ export
     view_mean_heatmap,
     view_scatter_mean,
     save_figure,
+    pre_defined_params,
     generate_figure_3_data,
     generate_figure_3_a,
     generate_figure_3_b,
