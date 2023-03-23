@@ -40,6 +40,24 @@ function data_path_filenames(data_numeric_label::Int)
     return data_path_json_vec
 end
 
+
+function data_path_filenames(data_numeric_label::Int,iterations)
+    input_values = pre_defined_params()
+    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = input_values
+    iter = Iterations(simulation_iterations,parameter_iterations)
+    parameter_span = "Span"
+    iterations = lpad.(1:iterations,2,"0")
+    data_path_json_vec = [
+        data_root*
+        join_figure_number_letter(x,parameter_span)*
+        "ParamIter"*
+        string(z) 
+            for x in data_numeric_label 
+            for z in iterations] .* 
+            ".json"
+    return data_path_json_vec
+end
+
 function get_grouped_file_paths(input_values)
 
     grouped_file_paths = @chain input_values begin
