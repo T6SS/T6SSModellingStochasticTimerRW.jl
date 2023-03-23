@@ -90,8 +90,23 @@ export
     view_mean_heatmap,
     view_scatter_mean,
     save_figure,
+    generate_figure_3_data,
+    generate_figure_3_a,
+    generate_figure_3_b,
+    generate_figure_3_c,
+    generate_figure_3_d,
     generate_figure_3,
+    generate_figure_4_data,
+    generate_figure_4_a,
+    generate_figure_4_b,
+    generate_figure_4_c,
+    generate_figure_4_d,
     generate_figure_4,
+    generate_figure_5_data,
+    generate_figure_5_a,
+    generate_figure_5_b,
+    generate_figure_5_c,
+    generate_figure_5_d,
     generate_figure_5
 
 include("GetStructsTypes.jl")
