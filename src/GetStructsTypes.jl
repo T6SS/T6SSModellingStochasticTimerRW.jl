@@ -88,11 +88,11 @@
         Δt::Float64
         Δx::Union{Int64,Float64}
         T::Int64
-        X::Int64
+        X::Union{Int64,Float64}
         aspect::Union{Int64,Float64}
         boundary::String
-        simulation_iterations::Int64
-        parameter_iterations::Int64
+        simulation_iterations::Union{Int64,Any}
+        parameter_iterations::Union{Int64,Any}
         λ₀::Union{Float64,Int64}
         λ₁::Union{Float64,Int64}
         h::Union{Float64,Int64}
