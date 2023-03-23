@@ -458,7 +458,7 @@ function generate_figure_5_data(input_values)
     boundary = "no_flux"
     
     iter = Iterations(simulation_iterations,parameter_iterations) 
-    parameter_iterations_save = iter.parameter_iterations+1
+    parameter_iterations_save = iter.parameter_iterations
     new_input_values = pre_defined_params(parameter_iterations_save,parameter_iterations)
     data_path_json_vec = 
         data_path_filenames(
@@ -664,7 +664,7 @@ Figure 5:
 2. Large value of D
 3. Range of D and extpected distance travelled
 """
-function generate_figure_5(simulation_iterations::Int64;parameter_iterations::Int64=49)
+function generate_figure_5(simulation_iterations;parameter_iterations=49)
     
     input_values = pre_defined_params(simulation_iterations,parameter_iterations)
     iters_get_values = generate_iters_get_values()
