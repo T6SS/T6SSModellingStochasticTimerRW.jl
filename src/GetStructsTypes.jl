@@ -91,8 +91,8 @@
         X::Int64
         aspect::Union{Int64,Float64}
         boundary::String
-        simulation_iterations
-        parameter_iterations
+        simulation_iterations::Int64
+        parameter_iterations::Int64
         λ₀::Union{Float64,Int64}
         λ₁::Union{Float64,Int64}
         h::Union{Float64,Int64}
