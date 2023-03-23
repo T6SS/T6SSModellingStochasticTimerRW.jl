@@ -40,7 +40,7 @@ include("GetWalkerPositionsFunc.jl")
 include("ViewMultipleParamsIters.jl")
 include("ViewWalkerDistSolutionFunc.jl")
 include("GetHistogramDistancesT6ss.jl")
-
+include("GenerateFigures.jl")
 
 
 
