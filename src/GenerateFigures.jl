@@ -8,7 +8,8 @@ function pre_defined_params()
     boundary = "no_flux"
     simulation_iterations = 4
     parameter_iterations = 30
-    λ₀,λ₁ = 0.017,0.045
+    λ₀ = 0.1
+    λ₁ = 1
     h = 1
     dif_min = 0.0049
     dif_max = 0.1
@@ -23,14 +24,14 @@ function pre_defined_params()
     return input_values
 end
 
-function pre_defined_params(parameter_iterations)
+function pre_defined_params(simulation_iterations,parameter_iterations)
     Δt = 0.0001
     Δx = 1
     T = 10
     X = 20
     aspect = 1
     boundary = "no_flux"
-    simulation_iterations = 4
+    simulation_iterations = simulation_iterations
     parameter_iterations = parameter_iterations
     λ₀,λ₁ = 0.017,0.045
     h = 1
@@ -63,24 +64,13 @@ function data_path_filenames(input_values,data_numeric_label)
     return data_path_json_vec
 end
 
-
-function get_grouped_file_paths(input_values)
-
-    grouped_file_paths = @chain input_values begin
-            _.data_root
-            find(_,1,2,"json") 
-            sort(_)
-        end
-    return grouped_file_paths
-end
-
 function generate_iters_get_values() 
     iters_get_values = [
     (group = 1, data_type = "parameters", data_value = "λ₀", data_label = L"\lambda_0", data_measure = "",xaxis = L"d_T",yaxis = L"P(d_T)", dist_axis = L"\bar{d}_T"),
     (group = 2, data_type = "parameters", data_value = "h", data_label = L"h_0", data_measure = "",xaxis = L"d_T",yaxis = L"P(d_T)", dist_axis = L"\bar{d}_T"),
     (group = 3, data_type = "variables", data_value = "aspect", data_label = L"aspect", data_measure = "",xaxis = L"d_T",yaxis = L"P(d_T)", dist_axis = L"\bar{d}_T"),
     (group = 4, data_type = "parameters", data_value = "h", data_label = L"D_0 \> (\mu m^2/s)", data_measure = L"\mu m^2/s",xaxis = L"d_{T_{OC}}\>\mu m",yaxis = L"P(d_{T_{OC}})", dist_axis = L"\bar{d}_{T_{OC}}\>\mu m")]
-return iters_get_values
+    return iters_get_values
 end
 
 function generate_telegraph_times_one_cycle(var,Δp)
@@ -106,9 +96,9 @@ function generate_telegraph_times_one_cycle(var,Δp)
     return telegraph_time_dist(t₀,t₁)
 end
 
-function generate_figure_3_data()
+function generate_figure_3_data(input_values)
 
-    input_values = pre_defined_params()
+    
     @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
                 input_values
     T = 200         
@@ -349,15 +339,15 @@ function generate_figure_4_a(input_values)
     return fig4a
 end
 
-function generate_figure_4_b(iters_get_values)
+function generate_figure_4_b(input_values,iters_get_values)
     Δx = 0.1
     first_plot = "02"
-    figure_4 = 4
+    figure_number = 4
 
     parameter_colours = [colorant"#d471d1", colorant"#60dce5"]
 
     # For everything except the last figure
-    data_figsb = @chain figure_4 begin
+    data_figsb = @chain figure_number begin
         data_path_filenames(input_values,_)
         filter(x -> occursin("Iter$(first_plot).",x),_)[1]
         read_solution_from_memory(_,SolutionVarParDom)
@@ -377,13 +367,13 @@ end
 function generate_figure_4_c(input_values,iters_get_values)
     Δx = 0.1
     second_plot = lpad(input_values.parameter_iterations - 1,2,"0")
-    figure_4 = 4
+    figure_number = 4
 
     parameter_colours = [colorant"#d471d1", colorant"#60dce5"]
 
 
     # For everything except the last figure
-    data_figsc = @chain figure_4 begin
+    data_figsc = @chain figure_number begin
         data_path_filenames(input_values,_)
         filter(x -> occursin("Iter$(second_plot).",x),_)[1]
         read_solution_from_memory(_,SolutionVarParDom)
@@ -470,9 +460,10 @@ function generate_figure_5_data(input_values)
     
     iter = Iterations(simulation_iterations,parameter_iterations) 
     parameter_iterations_save = iter.parameter_iterations+1
+    new_input_values = pre_defined_params(parameter_iterations_save,parameter_iterations)
     data_path_json_vec = 
         data_path_filenames(
-            pre_defined_params(parameter_iterations_save),
+            new_input_values,
             figure_number) # sort different itrerations
     vars = Variables(Δt, Δx, T, X, aspect,boundary) # set variables to Variable struct
     dom = dimensions(vars) # get dimensions of domain stored to Domain struct
@@ -529,7 +520,7 @@ function generate_figure_5_data(input_values)
     write_solution_to_file.(sols,data_path_json_vec)
 end
 
-function generate_figure_5_a(iters_get_values)
+function generate_figure_5_a(input_values,iters_get_values)
 
     first_plot = "02"
     figure_number = 5
@@ -564,7 +555,7 @@ function generate_figure_5_b(input_values,iters_get_values)
 
 end
 
-function generate_figure_5_c(iters_get_values)
+function generate_figure_5_c(input_values,iters_get_values)
     figure_number = 5
     first_D_value = 0.0049
 
@@ -637,9 +628,9 @@ Figure 3:
 3. Time series random walk in x and y
 4. Random walk 
 """
-function generate_figure_3()
-
-    data = generate_figure_3_data()
+function generate_figure_3(simulation_iterations,parameter_iterations)
+    input_values = pre_defined_params(simulation_iterations,parameter_iterations)
+    data = generate_figure_3_data(input_values)
     figsa = generate_figure_3_a(data)
     figsb = generate_figure_3_b(data)
     figsc = generate_figure_3_c(data)
@@ -655,12 +646,12 @@ Figure 4:
 3. Large value of λ₀
 4. Range of λ₀ and extpected distance travelled
 """
-function generate_figure_4()
-    input_values = pre_defined_params()
+function generate_figure_4(simulation_iterations,parameter_iterations)
+    input_values = pre_defined_params(simulation_iterations,parameter_iterations)
     iters_get_values = generate_iters_get_values()
     generate_figure_4_data(input_values)
     figsa = generate_figure_4_a(input_values)
-    figsb = generate_figure_4_b(iters_get_values)
+    figsb = generate_figure_4_b(input_values,iters_get_values)
     figsc = generate_figure_4_c(input_values,iters_get_values)
     figsd = generate_figure_4_d(input_values,iters_get_values)
 
@@ -674,14 +665,14 @@ Figure 5:
 2. Large value of D
 3. Range of D and extpected distance travelled
 """
-function generate_figure_5()
-    parameter_iterations = 49
-    input_values = pre_defined_params(parameter_iterations)
+function generate_figure_5(simulation_iterations;parameter_iterations=49)
+    
+    input_values = pre_defined_params(simulation_iterations,parameter_iterations)
     iters_get_values = generate_iters_get_values()
     generate_figure_5_data(input_values)
-    figsa = generate_figure_5_a(iters_get_values)
+    figsa = generate_figure_5_a(input_values,iters_get_values)
     figsb = generate_figure_5_b(input_values,iters_get_values)
-    figsc = generate_figure_5_c(iters_get_values)
+    figsc = generate_figure_5_c(input_values,iters_get_values)
 
     return (a = figsa,b = figsb,c=figsc)
 end
