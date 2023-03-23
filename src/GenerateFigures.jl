@@ -102,7 +102,8 @@ function generate_figure_3_data(input_values)
                 input_values
     T = 200         
     Δt = 1E-2   
-
+    λ₀ = 0.017
+    λ₁ = 0.045
     aspect = 1.6
     var = Variables(Δt, Δx, T, X, aspect,boundary)
     par =  Parameters(λ₀,λ₁,h)
@@ -308,6 +309,11 @@ end
 function generate_figure_4_a(input_values)
     @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
     input_values
+
+    T = 200         
+    Δt = 1E-2   
+    λ₀ = 0.017
+    λ₁ = 0.045
     vars = Variables(Δt, Δx, T, X, aspect,boundary)
     par =  Parameters(λ₀,λ₁,h)
     Δp = Δ(par,vars)
@@ -315,6 +321,8 @@ function generate_figure_4_a(input_values)
     λ₀_vec = range(0,.05,iter.parameter_iterations)
     parameter_colours = [colorant"#d471d1", colorant"#60dce5"]
     x = t⃗(vars)
+
+
 
     # Show two generic time series
     par =  map(x -> Parameters(x,λ₁,h),[λ₀_vec[10],λ₀_vec[end-1]])
