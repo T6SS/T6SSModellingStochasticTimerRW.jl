@@ -19,21 +19,20 @@ function pre_defined_params()
     data_root = "data/"
     input_values = T6ssDataGenerateInput(
             Δt,Δx,T,X,aspect,boundary,
-            simulation_iterations::Int64,parameter_iterations::Int64,
+            simulation_iterations,parameter_iterations,
             λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root)
     return input_values
 end
 
-function pre_defined_params(simulation_iterations::Int64,parameter_iterations::Int64)
+function pre_defined_params(simulation_iterations,parameter_iterations)
     Δt = 0.0001
     Δx = 1
     T = 10
     X = 20
     aspect = 1
     boundary = "no_flux"
-    simulation_iterations = simulation_iterations
-    parameter_iterations = parameter_iterations
-    λ₀,λ₁ = 0.017,0.045
+    λ₀ = 0.1
+    λ₁ = 1
     h = 1
     dif_min = 0.0049
     dif_max = 0.1
@@ -43,14 +42,14 @@ function pre_defined_params(simulation_iterations::Int64,parameter_iterations::I
     data_root = "data/"
     input_values = T6ssDataGenerateInput(
             Δt,Δx,T,X,aspect,boundary,
-            simulation_iterations::Int64,parameter_iterations::Int64,
+            simulation_iterations,parameter_iterations,
             λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root)
     return input_values
 end
 
 function data_path_filenames(input_values,data_numeric_label)
-    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations::Int64,parameter_iterations::Int64,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = input_values
-    iter = Iterations(simulation_iterations::Int64,parameter_iterations::Int64)
+    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = input_values
+    iter = Iterations(simulation_iterations,parameter_iterations)
     parameter_span = "Span"
     iterations = lpad.(1:iter.parameter_iterations,2,"0")
     data_path_json_vec = [
@@ -99,7 +98,7 @@ end
 function generate_figure_3_data(input_values)
 
     
-    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations::Int64,parameter_iterations::Int64,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
+    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
                 input_values
     T = 200         
     Δt = 1E-2   
@@ -276,12 +275,12 @@ end
 
 function generate_figure_4_data(input_values)
 
-    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations::Int64,parameter_iterations::Int64,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = input_values
+    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = input_values
     var = Variables(Δt, Δx, T, X, aspect,boundary)
     par =  Parameters(λ₀,λ₁,h)
     Δp = Δ(par,var)    
     dom = dimensions(var)
-    iter = Iterations(simulation_iterations::Int64,parameter_iterations::Int64)
+    iter = Iterations(simulation_iterations,parameter_iterations)
     λ₀ₘᵢₙ = 0.01
     λ₀ₘₐₓ = 10
     figure_number = 4
@@ -307,12 +306,12 @@ function generate_figure_4_data(input_values)
 end
 
 function generate_figure_4_a(input_values)
-    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations::Int64,parameter_iterations::Int64,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
+    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
     input_values
     vars = Variables(Δt, Δx, T, X, aspect,boundary)
     par =  Parameters(λ₀,λ₁,h)
     Δp = Δ(par,vars)
-    iter = Iterations(simulation_iterations::Int64,parameter_iterations::Int64)
+    iter = Iterations(simulation_iterations,parameter_iterations)
     λ₀_vec = range(0,.05,iter.parameter_iterations)
     parameter_colours = [colorant"#d471d1", colorant"#60dce5"]
     x = t⃗(vars)
@@ -445,7 +444,7 @@ end
 
 function generate_figure_5_data(input_values)
     
-    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations::Int64,parameter_iterations::Int64,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
+    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
     input_values
     figure_number = 5
     
@@ -458,7 +457,7 @@ function generate_figure_5_data(input_values)
     aspect = 1.6
     boundary = "no_flux"
     
-    iter = Iterations(simulation_iterations::Int64,parameter_iterations::Int64) 
+    iter = Iterations(simulation_iterations,parameter_iterations) 
     parameter_iterations_save = iter.parameter_iterations+1
     new_input_values = pre_defined_params(parameter_iterations_save,parameter_iterations)
     data_path_json_vec = 
@@ -628,8 +627,8 @@ Figure 3:
 3. Time series random walk in x and y
 4. Random walk 
 """
-function generate_figure_3(simulation_iterations::Int64,parameter_iterations::Int64)
-    input_values = pre_defined_params(simulation_iterations::Int64,parameter_iterations::Int64)
+function generate_figure_3(simulation_iterations,parameter_iterations)
+    input_values = pre_defined_params(simulation_iterations,parameter_iterations)
     data = generate_figure_3_data(input_values)
     figsa = generate_figure_3_a(data)
     figsb = generate_figure_3_b(data)
@@ -646,8 +645,8 @@ Figure 4:
 3. Large value of λ₀
 4. Range of λ₀ and extpected distance travelled
 """
-function generate_figure_4(simulation_iterations::Int64,parameter_iterations::Int64)
-    input_values = pre_defined_params(simulation_iterations::Int64,parameter_iterations::Int64)
+function generate_figure_4(simulation_iterations,parameter_iterations)
+    input_values = pre_defined_params(simulation_iterations,parameter_iterations)
     iters_get_values = generate_iters_get_values()
     generate_figure_4_data(input_values)
     figsa = generate_figure_4_a(input_values)
@@ -667,7 +666,7 @@ Figure 5:
 """
 function generate_figure_5(simulation_iterations::Int64;parameter_iterations::Int64=49)
     
-    input_values = pre_defined_params(simulation_iterations::Int64,parameter_iterations::Int64)
+    input_values = pre_defined_params(simulation_iterations,parameter_iterations)
     iters_get_values = generate_iters_get_values()
     generate_figure_5_data(input_values)
     figsa = generate_figure_5_a(input_values,iters_get_values)
