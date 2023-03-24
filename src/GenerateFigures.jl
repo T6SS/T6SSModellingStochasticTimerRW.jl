@@ -140,7 +140,9 @@ function generate_figure_3_data(input_values)
     rwy = y_pos[indices_per_state.i₁]
 
 
-
+    
+    par =  Parameters(λ₀,λ₁,h)
+    Δp = Δ(par,var) 
     tele_times = [generate_telegraph_times_one_cycle(var,Δp) for i in 1:10^simulation_iterations]
     not_firing_time = reduce(vcat,[t.t₀ for t in tele_times])
     firing_time = reduce(vcat,[t.t₁ for t in tele_times])
