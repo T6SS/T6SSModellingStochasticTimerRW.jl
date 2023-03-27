@@ -327,7 +327,8 @@ function generate_figure_4_a(input_values)
 
 
     # Show two generic time series
-    par =  map(x -> Parameters(x,λ₁,h),[λ₀_vec[10],λ₀_vec[end-1]])
+    
+    par =  map(x -> Parameters(x,λ₁,h),[λ₀_vec[3],λ₀_vec[end-1]])
     Δp = map(x -> Δ(x,vars),par)
     y = map(x->get_state_time_series(vars,x),Δp)
     size_x = size(x,1)
