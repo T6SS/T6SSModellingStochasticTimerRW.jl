@@ -637,8 +637,7 @@ Figure 3:
 3. Time series random walk in x and y
 4. Random walk 
 """
-function generate_figure_3(simulation_iterations,parameter_iterations)
-    input_values = pre_defined_params(simulation_iterations,parameter_iterations)
+function generate_figure_3(input_values)
     data = generate_figure_3_data(input_values)
     figsa = generate_figure_3_a(data)
     figsb = generate_figure_3_b(data)
@@ -655,8 +654,7 @@ Figure 4:
 3. Large value of λ₀
 4. Range of λ₀ and extpected distance travelled
 """
-function generate_figure_4(simulation_iterations,parameter_iterations)
-    input_values = pre_defined_params(simulation_iterations,parameter_iterations)
+function generate_figure_4(input_values)
     iters_get_values = generate_iters_get_values()
     generate_figure_4_data(input_values)
     figsa = generate_figure_4_a(input_values)
@@ -674,9 +672,7 @@ Figure 5:
 2. Large value of D
 3. Range of D and extpected distance travelled
 """
-function generate_figure_5(simulation_iterations;parameter_iterations=49)
-    
-    input_values = pre_defined_params(simulation_iterations,parameter_iterations)
+function generate_figure_5(input_values)
     iters_get_values = generate_iters_get_values()
     generate_figure_5_data(input_values)
     figsa = generate_figure_5_a(input_values,iters_get_values)
