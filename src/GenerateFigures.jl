@@ -455,19 +455,12 @@ end
 
 function generate_figure_5_data(input_values)
     
-    @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = 
-    input_values
+  @unpack Δt, Δx, T, X, aspect,boundary,simulation_iterations,parameter_iterations,λ₀,λ₁,h,dif_min,dif_max,λmax,hmax,amax,data_root = input_values
     figure_number = 5
-    
-    
-    
-    Δt = 0.0001
-    Δx = 1
-    T = 10
-    X = 20
+
     aspect = 1.6
-    boundary = "no_flux"
-    
+
+
     iter = Iterations(simulation_iterations,parameter_iterations) 
     parameter_iterations_save = iter.parameter_iterations
     new_input_values = pre_defined_params(parameter_iterations_save,parameter_iterations)
@@ -477,25 +470,25 @@ function generate_figure_5_data(input_values)
             figure_number) # sort different itrerations
     vars = Variables(Δt, Δx, T, X, aspect,boundary) # set variables to Variable struct
     dom = dimensions(vars) # get dimensions of domain stored to Domain struct
-    
+
     Literature_scale = 2.7 # Ratio 1:2.7 of TssB:TssL
-    
+
     λ₀ = 1/60
     λ₁ = λ₀*Literature_scale
-    dif_min = 1E-3#0.0049
+    dif_min = 0.0049
     dif_max = 0.1
     Δx = 0.1  # need to add in later
     D⃗ = @chain range(dif_min,dif_max,iter.parameter_iterations) begin
         vcat(_,0.0049)
         sort(_)    
     end # Set range of the diffusion
-    
+
     h⃗ = round.(LitRate.(D⃗,Δx),digits=4) # Set range for h based on diffusion (D⃗) from literature
     par = map(h -> Parameters(λ₀,λ₁,h),h⃗)
     Δp = map(p -> Δ(p,vars),par) 
-    
-    
-    
+
+
+
     # Update Δt according to Db and Δx
     function Δt_func(φ,Δx,Db,var::Variables)
         ϵ = 1e-6
@@ -515,7 +508,7 @@ function generate_figure_5_data(input_values)
     vars = [@set i.X = Int(X*Δx) for i in vars] # Re-set X
     dom = [dimensions(i) for i in vars] # Upate dimensions
     par = map(D -> Parameters(λ₀,λ₁,D),D⃗) # Update parameters
-    
+
     sols = [
         SolutionVarParDom(
             vars[i],
@@ -525,7 +518,7 @@ function generate_figure_5_data(input_values)
             results[i].experimental,
             results[i].sample) 
             for i in 1:parameter_iterations_save] # Convert to struct # account for special D
-    
+
 
     write_solution_to_file.(sols,data_path_json_vec)
 end
