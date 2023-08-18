@@ -712,10 +712,8 @@ Figure 5:
 """
 function generate_figure_5_ab_c(input_values)
     iters_get_values = generate_iters_get_values()
-    generate_figure_5_data(input_values)
     figsab = generate_figure_5_ab(input_values,iters_get_values)
     figsc = generate_figure_5_c(input_values,iters_get_values)
 
     return (ab = figsab,c=figsc)
 end
-
