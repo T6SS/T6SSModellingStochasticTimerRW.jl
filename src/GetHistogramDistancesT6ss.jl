@@ -25,6 +25,48 @@ function view_distance_and_mean(data::SolutionVarParDom,label::NamedTuple,simula
     return fig
 end
 
+function view_distance_mean_small_large_param(
+    data::NamedTuple{(:small_param, :large_param), Tuple{SolutionVarParDom, SolutionVarParDom}},
+    label::NamedTuple;
+    α = 0.5)
+    normal(y) = y ./ sum(y)
+    control_colour = colorant"#d5b670"  # Medium yellow 
+    small_param = colorant"#d471d1" # Magenta
+    large_param = colorant"#60dce5" # Cyan
+    
+    # set data up
+    dₛ = data[:small_param]
+    dₗ = data[:large_param]
+    xₛ = set_range_iter(dₛ.domain,dₛ.variables)
+    xₗ = set_range_iter(dₗ.domain,dₗ.variables)
+    equiv = xₛ == xₗ && minimum(xₗ) == minimum(xₛ) && maximum(xₗ) == maximum(xₛ)
+    if equiv
+        x = xₛ
+    else
+        x₀ = minimum((first(xₛ),first(xₗ)))
+        xₙ = maximum((last(xₛ),last(xₗ)))
+        x = x₀:xₙ
+    end
+
+    yexpₛ = normal(get_count(dₛ.experimental,x))
+    yexpₗ = normal(get_count(dₗ.experimental,x))
+    ysam = normal(get_count(dₛ.sample,x))
+    
+    fig = Figure(resolution=(800,800))
+        fontsize_theme = Theme(fontsize = 35)
+        set_theme!(fontsize_theme)
+        ax = Axis(fig[1,1],
+        width = 512, height = 512,aspect=1,
+        xlabel = label[:xaxis],ylabel = label[:yaxis],xlabelsize=35,ylabelsize=35)
+        CairoMakie.barplot!(ax,x,ysam,color=control_colour)
+        vlines!(ax,mean(dₛ.sample),color = control_colour)
+        CairoMakie.barplot!(ax,x,yexpₛ,color=(small_param,α))
+        vlines!(ax,mean(dₛ.experimental),color=small_param)
+        CairoMakie.barplot!(ax,x,yexpₗ,color=(large_param,α))
+        vlines!(ax,mean(dₗ.experimental),color=large_param)
+    #Legend(fig[1,1],[[control_barplot,control_mean_vline],[simulation_barplot,simulation_mean_barplot]],["Control","Simulation"], label[:data_label],orientation=:horizontal)
+    return fig
+end
 
 """
 Take type `SolutionVarParDom` and returns a `Figure`. The figure is a bar plot of sample and experimental simulations as well as the means.

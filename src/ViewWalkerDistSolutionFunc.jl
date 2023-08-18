@@ -4,7 +4,7 @@
 //
     # define data in terms of a vector of random Walkers
     # for use in algebra of graphics
-    AlgebraOfGraphics.data(w::Vector{Walker2D{Int64}}) = RandomWalker.position.(w)
+    #AlgebraOfGraphics.data(w::Vector{Walker2D{Int64}}) = RandomWalker.position.(w)
 
 
 

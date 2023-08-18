@@ -92,5 +92,73 @@
         solution_params = vcat(solutionλ₀,solutionh,solutiona,sols)
         write_solution_to_file.(solution_params,data_path_json_vec)
     end
-
-
+    
+    function load_figure_4_small_large_param_data(input_values)
+        Δx = 0.1
+        first_plot = "02"
+        second_plot = lpad(input_values.parameter_iterations - 1,2,"0")
+        figure_number = 4
+    
+        # Load data for small param value
+        data_figsb = @chain figure_number begin
+            data_path_filenames(input_values,_)
+            filter(x -> occursin("Iter$(first_plot).",x),_)[1]
+            read_solution_from_memory(_,SolutionVarParDom)
+        end
+        # Load data for small large value
+        data_figsc = @chain figure_number begin
+            data_path_filenames(input_values,_)
+            filter(x -> occursin("Iter$(second_plot).",x),_)[1]
+            read_solution_from_memory(_,SolutionVarParDom)
+        end
+    
+        # Update param values
+        data_figsb = @set data_figsb.experimental = data_figsb.experimental ./ (1/Δx)
+        data_figsb = @set data_figsb.sample = data_figsb.sample ./ (1/Δx)
+        data_figsb = @set data_figsb.domain = data_figsb.domain * Δx
+        data_figsb = @set data_figsb.variables.Δx = data_figsb.variables.Δx ./ (1/Δx)
+        data_figsc = @set data_figsc.experimental = data_figsc.experimental ./ (1/Δx)
+        data_figsc = @set data_figsc.sample = data_figsc.sample ./ (1/Δx)
+        data_figsc = @set data_figsc.domain = data_figsc.domain * Δx
+        data_figsc = @set data_figsc.variables.Δx = data_figsc.variables.Δx ./ (1/Δx)
+    
+    
+        return (small_param = data_figsb,large_param = data_figsc)
+    
+    end
+    
+    function load_figure_5_small_large_param_data(input_values)
+        first_plot = "02"
+        second_plot = lpad(input_values.parameter_iterations - 1,2,"0")
+        figure_number = 5
+    
+        data_figsa = @chain figure_number begin
+            data_path_filenames(input_values,_)
+            filter(x -> occursin("Iter$(first_plot).",x),_)[1]
+            read_solution_from_memory(_,SolutionVarParDom)    
+        end
+    
+        data_figsb = @chain figure_number begin
+            data_path_filenames(input_values,_)
+            filter(x -> occursin("Iter$(second_plot).",x),_)[1]
+            read_solution_from_memory(_,SolutionVarParDom)
+        end
+    
+        return (small_param = data_figsa,large_param = data_figsb)
+    
+    end
+    
+    function generate_figure_4_small_large_param(input_values)
+        data = load_figure_4_small_large_param_data(input_values)
+        label = label = generate_iters_get_values()[1]
+        fig4bc = view_distance_mean_small_large_param(data,label)
+        return fig4bc 
+    end
+    
+    function generate_figure_5_small_large_param(input_values)
+        data = load_figure_5_small_large_param_data(input_values)
+        label = label = generate_iters_get_values()[4]
+        fig5ab = view_distance_mean_small_large_param(data,label)
+        return fig5ab 
+    end
+    

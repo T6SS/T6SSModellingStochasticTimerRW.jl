@@ -7,7 +7,6 @@ using Reexport
 @reexport using Profile
 @reexport using Telegraph
 @reexport using RandomWalker
-@reexport using AlgebraOfGraphics
 @reexport using JSON3
 @reexport using Distances
 @reexport using Colors
@@ -87,6 +86,7 @@ export
     solve_iterations,
     visualise_save_solution,
     view_distance_and_mean,
+    view_distance_mean_small_large_param,
     view_mean_heatmap,
     view_scatter_mean,
     save_figure,
@@ -95,6 +95,8 @@ export
     get_grouped_file_paths,
     generate_iters_get_values,
     generate_telegraph_times_one_cycle,
+    load_figure_4_small_large_param_data,
+    load_figure_5_small_large_param_data,
     generate_figure_3_data,
     generate_figure_3_a,
     generate_figure_3_b,
@@ -111,7 +113,11 @@ export
     generate_figure_5_a,
     generate_figure_5_b,
     generate_figure_5_c,
-    generate_figure_5
+    generate_figure_5,
+    generate_figure_4_bc,
+    generate_figure_5_ab,
+    generate_figure_4_a_bc_d,
+    generate_figure_5_ab_c
 
 include("GetStructsTypes.jl")
 include("GetFileAndNamingFunc.jl")

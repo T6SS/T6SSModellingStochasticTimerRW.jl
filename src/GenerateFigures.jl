@@ -401,6 +401,14 @@ function generate_figure_4_c(input_values,iters_get_values)
     return figsc
 end
 
+function generate_figure_4_bc(input_values,iters_get_values)
+    
+    data = load_figure_4_small_large_param_data(input_values)
+    fig4bc = view_distance_mean_small_large_param(data,iters_get_values[1])
+    
+    return fig4bc
+end
+
 function generate_figure_4_d(input_values,iters_get_values)
 
     Δx = 0.1
@@ -452,8 +460,6 @@ function generate_figure_4_d(input_values,iters_get_values)
 
     return figsdscat
 end
-
-
 
 function generate_figure_5_data(input_values)
     # Update Δt according to Db and Δx
@@ -516,11 +522,7 @@ function generate_figure_5_data(input_values)
         write_solution_to_file(sols,data_path_json_vec[i])
     end
 
-  end
-
-
-
-
+end
 
 function generate_figure_5_a(input_values,iters_get_values)
 
@@ -555,6 +557,14 @@ function generate_figure_5_b(input_values,iters_get_values)
 
     return figsb
 
+end
+
+function generate_figure_5_ab(input_values,iters_get_values)
+    
+    data = load_figure_5_small_large_param_data(input_values)
+    fig5ab = view_distance_mean_small_large_param(data,iters_get_values[4])
+    
+    return fig5ab
 end
 
 function generate_figure_5_c(input_values,iters_get_values)
@@ -659,6 +669,24 @@ function generate_figure_4(input_values)
     return (a = figsa,b = figsb,c=figsc,d=figsd)
 end
 
+
+
+
+"""
+Figure 4:
+1. Generic time series
+2. Small value of λ₀
+3. Large value of λ₀
+4. Range of λ₀ and extpected distance travelled
+"""
+function generate_figure_4_a_bc_d(input_values)
+    iters_get_values = generate_iters_get_values()
+    figsa = generate_figure_4_a(input_values)
+    figsbc = generate_figure_4_bc(input_values,iters_get_values)
+    figsd = generate_figure_4_d(input_values,iters_get_values)
+    return (a = figsa,bc = figsbc,d=figsd)
+end
+
 """
 Figure 5:
 1. Small value of D
@@ -674,3 +702,20 @@ function generate_figure_5(input_values)
 
     return (a = figsa,b = figsb,c=figsc)
 end
+
+
+"""
+Figure 5:
+1. Small value of D
+2. Large value of D
+3. Range of D and extpected distance travelled
+"""
+function generate_figure_5_ab_c(input_values)
+    iters_get_values = generate_iters_get_values()
+    generate_figure_5_data(input_values)
+    figsab = generate_figure_5_ab(input_values,iters_get_values)
+    figsc = generate_figure_5_c(input_values,iters_get_values)
+
+    return (ab = figsab,c=figsc)
+end
+
