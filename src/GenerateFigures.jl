@@ -4,7 +4,7 @@ function pre_defined_params()
     Δx = 1
     T = 10
     X = 20
-    aspect = 1
+    aspect = 1.6
     boundary = "no_flux"
     simulation_iterations = 4
     parameter_iterations = 30
