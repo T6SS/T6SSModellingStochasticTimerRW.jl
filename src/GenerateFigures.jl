@@ -445,7 +445,7 @@ function generate_figure_4_d(input_values,iters_get_values)
     figsdscat = Figure(resolution=(800,800))
     fontsize_theme = Theme(fontsize = 35)
     set_theme!(fontsize_theme)
-    ax = Axis(figsdscat[2,1],aspect=1,
+    ax = Axis(figsdscat[1,1],aspect=1,
         xlabel = iters_get_values[1][:data_label],ylabel = iters_get_values[1][:dist_axis], xlabelsize=35, ylabelsize=35)
     scatter!(ax,x,ysam,color=control_colour)
     scatter!(ax,x,yexp,color=simulation_color)
@@ -614,7 +614,7 @@ function generate_figure_5_c(input_values,iters_get_values)
     figsd = Figure(resolution=(800,800))
             fontsize_theme = Theme(fontsize = 35)
             set_theme!(fontsize_theme)
-            ax = Axis(figsd[2,1],aspect=1,
+            ax = Axis(figsd[1,1],aspect=1,
             xlabel = iters_get_values[4][:data_label],ylabel = iters_get_values[4][:dist_axis],xlabelsize=35,ylabelsize=35)
             scatter!(ax,D_param,ysam,color=control_colour)
             scatter!(ax,D_param,yexp,color=simulation_color)
