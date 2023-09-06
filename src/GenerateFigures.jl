@@ -337,7 +337,7 @@ function generate_figure_4_a(input_values)
     axtop = Axis(ga[1, 1],ylabel = L"s(t)",width = 512, height = 245,aspect=2,yticks=[0,1])
     axbottom = Axis(ga[2, 1],
     width = 512, height = 256,aspect=2,
-    xlabel = L"t",ylabel = L"s(t)",xlabelsize=35,ylabelsize=35)
+    xlabel = L"t",ylabel = L"s(t)",xlabelsize=35,ylabelsize=35,yticks=[0,1])
     linkxaxes!(axbottom, axtop)
     lines!(axtop,xy12[:,1],color=parameter_colours[1])
     lines!(axbottom,xy12[:,2],color=parameter_colours[2])
