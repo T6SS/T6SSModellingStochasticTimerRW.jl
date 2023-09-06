@@ -82,7 +82,7 @@ function view_mean_heatmap(data::SolutionVarParDom,label::NamedTuple,simulation_
     fig = Figure(resolution=(800,800))
     fontsize_theme = Theme(fontsize = 35)
     set_theme!(fontsize_theme)
-    ax = Axis(fig[2,1],aspect=1,
+    ax = Axis(fig[1,1],aspect=1,
         xlabel = L"d",ylabel = L"P(d)",xlabelsize=35,ylabelsize=35)
     control_barplot = barplot!(ax,x,ysam,color=control_colour)
     control_mean_vline = vlines!(ax,mean(data.sample),color = control_mean_colour)
@@ -119,7 +119,7 @@ function view_scatter_mean(distance::NamedTuple,label::NamedTuple)
     fig = Figure(resolution=(800,800))
     fontsize_theme = Theme(fontsize = 35)
     set_theme!(fontsize_theme)
-    ax = Axis(fig[2,1],aspect=1,
+    ax = Axis(fig[1,1],aspect=1,
         xlabel = label[:data_label],ylabel = label[:dist_axis], xlabelsize=35, ylabelsize=35)
     scatter!(ax,x,ysam,color=control_colour)
     scatter!(ax,x,yexp,color=simulation_color)
