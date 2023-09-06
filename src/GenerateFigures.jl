@@ -334,9 +334,8 @@ function generate_figure_4_a(input_values)
     fontsize_theme = Theme(fontsize = 35)
     set_theme!(fontsize_theme)
     ga = fig4a[2, 1] = GridLayout()
-    axtop = Axis(ga[1, 1],ylabel = L"s(t)",width = 512, height = 245,aspect=2,yticks=[0,1])
-    axbottom = Axis(ga[2, 1],
-    width = 512, height = 256,aspect=2,
+    axtop = Axis(ga[1, 1],ylabel = L"s(t)",aspect=2,yticks=[0,1])
+    axbottom = Axis(ga[2, 1],aspect=2,
     xlabel = L"t",ylabel = L"s(t)",xlabelsize=35,ylabelsize=35,yticks=[0,1])
     linkxaxes!(axbottom, axtop)
     lines!(axtop,xy12[:,1],color=parameter_colours[1])
