@@ -14,7 +14,7 @@ function view_distance_and_mean(data::SolutionVarParDom,label::NamedTuple,simula
     fig = Figure(resolution=(800,800))
     fontsize_theme = Theme(fontsize = 35)
     set_theme!(fontsize_theme)
-    ax = Axis(fig[2,1],aspect=1,
+    ax = Axis(fig[1,1],aspect=1,
         xlabel = label[:xaxis],ylabel = label[:yaxis],xlabelsize=35,ylabelsize=35)
     barplot!(ax,x,ysam,color=control_colour)
     vlines!(ax,mean(data.sample),color = control_colour)
