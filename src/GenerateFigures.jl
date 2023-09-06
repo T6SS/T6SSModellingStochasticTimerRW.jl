@@ -193,8 +193,7 @@ function generate_figure_3_a(data)
     figsa = Figure(resolution=(800,800))
         fontsize_theme = Theme(fontsize = 35)
         set_theme!(fontsize_theme)
-        ax = Axis(figsa[1,1],
-        width = 512, height = 512,aspect=1,
+        ax = Axis(figsa[1,1],aspect=1,yticks=[0,1],
         xlabel = L"t",ylabel = L"s(t)",xlabelsize=35,ylabelsize=35)
         lines!(ax,time_vec,st,color=line)
         scatter!(ax,t₀,s₀,label = L"s=0",color=not_fire,markersize=20)
@@ -219,8 +218,7 @@ function generate_figure_3_b(data)
     figsb = Figure(resolution=(800,800))
         fontsize_theme = Theme(fontsize = 35)
         set_theme!(fontsize_theme)
-        ax = Axis(figsb[1,1],
-        width = 512, height = 512,aspect=1,
+        ax = Axis(figsb[1,1],aspect=1,
         xlabel = L"\tau",ylabel = L"P(\tau)",xlabelsize=35,ylabelsize=35)
         hist!(ax,not_firing_time,label=L"\lambda_0",bins=bins,normalization=:pdf,color=not_fire)
         hist!(ax,firing_time,label=L"\lambda_1",bins=bins,normalization=:pdf,color=fire)
@@ -244,8 +242,7 @@ function generate_figure_3_c(data)
     figsc = Figure(resolution=(800,800))
         fontsize_theme = Theme(fontsize = 35)
         set_theme!(fontsize_theme)
-        ax = Axis(figsc[1,1],
-        width = 512, height = 512,aspect=1,
+        ax = Axis(figsc[1,1],aspect=1,
         xlabel = L"t",ylabel = "",xlabelsize=35,ylabelsize=35)
         lines!(ax,time_vec,x_pos,label = L"x(t)",color=not_fire)    
         lines!(ax,time_vec,y_pos,label = L"y(t)",color=fire)
@@ -266,8 +263,7 @@ function generate_figure_3_d(data)
     figsd = Figure(resolution=(800,800))
         fontsize_theme = Theme(fontsize = 35)
         set_theme!(fontsize_theme)
-        ax = Axis(figsd[1,1],
-        width = 512, height = 512,aspect=1,
+        ax = Axis(figsd[1,1],aspect=1,
         xlabel = L"x",ylabel = L"y",xlabelsize=35,ylabelsize=35)
         lines!(ax,x_pos,y_pos,label = L"RW",color=line)    
         scatter!(ax,x_pos[firing],y_pos[firing],color=fire,markersize=20)    
@@ -338,7 +334,7 @@ function generate_figure_4_a(input_values)
     fontsize_theme = Theme(fontsize = 35)
     set_theme!(fontsize_theme)
     ga = fig4a[2, 1] = GridLayout()
-    axtop = Axis(ga[1, 1],ylabel = L"s(t)",width = 512, height = 245,aspect=2)
+    axtop = Axis(ga[1, 1],ylabel = L"s(t)",width = 512, height = 245,aspect=2,yticks=[0,1])
     axbottom = Axis(ga[2, 1],
     width = 512, height = 256,aspect=2,
     xlabel = L"t",ylabel = L"s(t)",xlabelsize=35,ylabelsize=35)
@@ -449,8 +445,7 @@ function generate_figure_4_d(input_values,iters_get_values)
     figsdscat = Figure(resolution=(800,800))
     fontsize_theme = Theme(fontsize = 35)
     set_theme!(fontsize_theme)
-    ax = Axis(figsdscat[2,1],
-        width = 512, height = 512,aspect=1,
+    ax = Axis(figsdscat[2,1],aspect=1,
         xlabel = iters_get_values[1][:data_label],ylabel = iters_get_values[1][:dist_axis], xlabelsize=35, ylabelsize=35)
     scatter!(ax,x,ysam,color=control_colour)
     scatter!(ax,x,yexp,color=simulation_color)
@@ -619,8 +614,7 @@ function generate_figure_5_c(input_values,iters_get_values)
     figsd = Figure(resolution=(800,800))
             fontsize_theme = Theme(fontsize = 35)
             set_theme!(fontsize_theme)
-            ax = Axis(figsd[2,1],
-            width = 512, height = 512,aspect=1,
+            ax = Axis(figsd[2,1],aspect=1,
             xlabel = iters_get_values[4][:data_label],ylabel = iters_get_values[4][:dist_axis],xlabelsize=35,ylabelsize=35)
             scatter!(ax,D_param,ysam,color=control_colour)
             scatter!(ax,D_param,yexp,color=simulation_color)
